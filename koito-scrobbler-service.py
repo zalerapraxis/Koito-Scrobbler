@@ -57,18 +57,18 @@ def get_current_track():
             }
             return track_info
     except spotipy.exceptions.SpotifyException as e:
-        print(f"Spotify API error: {e}. Response: {e.response.text if e.response else 'No response'}")
+        print(f"Spotify API error: {e}. Response: {e.response.text if e.response else 'No response'}", flush=True)
     return None
 
 last_scrobbled_track = None
 
 def scrobble_track(track_info):
     timestamp = datetime.datetime.now().strftime("%H:%M:%S")
-    print(f"[{timestamp}] Scrobbling: {track_info['artist']} - {track_info['track']}")
+    print(f"[{timestamp}] Scrobbling: {track_info['artist']} - {track_info['track']}", flush=True)
     """Send the track information to Koito using the ListenBrainz API."""
     url = f"{config['KOITO_ADDRESS']}/apis/listenbrainz/1/submit-listens"
     headers = {
-        'Authorization': f'Token {config['KOITO_API_KEY']}',
+        'Authorization': f"Token {config['KOITO_API_KEY']}",
         'Content-Type': 'application/json'
     }
     data = {
@@ -88,8 +88,20 @@ def scrobble_track(track_info):
     response = requests.post(url, headers=headers, json=data)
     return response.status_code, response.json()
 
+def startup_message():
+    """Print startup message and check for current track."""
+    print("Koito-Scrobbler Service has started successfully.", flush=True)
+    koito_address = config['KOITO_ADDRESS']
+    print(f"Koito Address: {koito_address}", flush=True)
+    
+    # Check if a track is playing
+    track_info = get_current_track()
+    if not track_info:
+        print("No track playing - go listen to some music.", flush=True)
+
 def main():
     global last_scrobbled_track
+    startup_message()
     while True:
         try:
             track_info = get_current_track()
@@ -100,7 +112,7 @@ def main():
                     last_scrobbled_track = current_track
         except Exception as e:
             # Log the error
-            print(f"Error: {e}")
+            print(f"Error: {e}", flush=True)
         time.sleep(30)
 
 if __name__ == "__main__":

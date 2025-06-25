@@ -181,3 +181,4 @@ cython_debug/
 .cache_service
 config_secrets.py
 Koito-Scrobbler.code-workspace
+.env
