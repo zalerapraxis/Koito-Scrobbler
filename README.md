@@ -15,3 +15,6 @@ Run the script using Python:
 ```bash
 python koito-scrobbler-service.py
 ```
+
+
+koito-scrobbler.py just sort of shotguns tracks up to the Koito instance, and was more a PoC than anything. koito-scrobbler-service.py is intended to be run as a background service.
