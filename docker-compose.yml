@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  koito-scrobbler:
+    build: .
+    container_name: koito-scrobbler
+    restart: unless-stopped
+    env_file:
+      - .env
+    healthcheck:
+      test: ["CMD", "pgrep", "-f", "koito-scrobbler-service.py"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
