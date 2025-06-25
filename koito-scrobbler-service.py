@@ -32,6 +32,8 @@ def get_current_track():
         print(f"Spotify API error: {e}. Response: {e.response.text if e.response else 'No response'}")
     return None
 
+last_scrobbled_track = None
+
 def scrobble_track(track_info):
     timestamp = datetime.datetime.now().strftime("%H:%M:%S")
     print(f"[{timestamp}] Scrobbling: {track_info['artist']} - {track_info['track']}")
@@ -59,11 +61,15 @@ def scrobble_track(track_info):
     return response.status_code, response.json()
 
 def main():
+    global last_scrobbled_track
     while True:
         try:
             track_info = get_current_track()
             if track_info:
-                scrobble_track(track_info)
+                current_track = f"{track_info['artist']} - {track_info['track']}"
+                if current_track != last_scrobbled_track:
+                    scrobble_track(track_info)
+                    last_scrobbled_track = current_track
         except Exception as e:
             # Log the error
             print(f"Error: {e}")
