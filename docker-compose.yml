@@ -3,6 +3,8 @@ services:
     build: .
     container_name: koito-scrobbler
     restart: unless-stopped
+    volumes:
+      - ./spotify_cache:/app/.cache
     env_file:
       - .env
     healthcheck:

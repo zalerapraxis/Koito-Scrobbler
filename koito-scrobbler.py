@@ -18,8 +18,11 @@ def get_recently_played_tracks():
     """Fetch the recently played tracks from Spotify."""
     try:
         recently_played = sp.current_user_recently_played(limit=50)
+        if recently_played is None:
+            print("No recently played tracks found.")
+            return []
         tracks_info = []
-        for item in recently_played['items']:
+        for item in recently_played.get('items', []):
             track = item['track']
             track_info = {
                 'artist': track['artists'][0]['name'],
@@ -31,7 +34,7 @@ def get_recently_played_tracks():
             tracks_info.append(track_info)
         return tracks_info
     except spotipy.exceptions.SpotifyException as e:
-        print(f"Spotify API error: {e}. Response: {e.response.text if e.response else 'No response'}")
+        print(f"Spotify API error: {e}. HTTP Status: {e.http_status}, Code: {e.code}, Message: {e.msg}, Reason: {e.reason}")
     return []
 
 def scrobble_to_koito(track_info):

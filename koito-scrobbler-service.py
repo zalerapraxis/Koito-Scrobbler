@@ -39,7 +39,8 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
     client_secret=config['SPOTIPY_CLIENT_SECRET'],
     redirect_uri=config['SPOTIPY_REDIRECT_URI'],
     scope="user-read-currently-playing",
-    cache_path=".cache_service"
+    cache_path=".cache",
+    open_browser=False
 ))
 
 def get_current_track():
@@ -57,7 +58,7 @@ def get_current_track():
             }
             return track_info
     except spotipy.exceptions.SpotifyException as e:
-        print(f"Spotify API error: {e}. Response: {e.response.text if e.response else 'No response'}", flush=True)
+        print(f"Spotify API error: {e}. HTTP Status: {e.http_status}, Code: {e.code}, Message: {e.msg}, Reason: {e.reason}", flush=True)
     return None
 
 last_scrobbled_track = None
