@@ -61,7 +61,7 @@ def get_current_track():
         print(f"Spotify API error: {e}. HTTP Status: {e.http_status}, Code: {e.code}, Message: {e.msg}, Reason: {e.reason}", flush=True)
     return None
 
-last_scrobbled_track = None
+last_scrobbled_played_at = None
 
 def scrobble_track(track_info):
     timestamp = datetime.datetime.now().strftime("%H:%M:%S")
@@ -101,20 +101,20 @@ def startup_message():
         print("No track playing - go listen to some music.", flush=True)
 
 def main():
-    global last_scrobbled_track
+    global last_scrobbled_played_at
     startup_message()
     while True:
         try:
             track_info = get_current_track()
             if track_info:
-                current_track = f"{track_info['artist']} - {track_info['track']}"
-                if current_track != last_scrobbled_track:
+                # Scrobble each instance based on unique played_at timestamp
+                if track_info['played_at'] != last_scrobbled_played_at:
                     scrobble_track(track_info)
-                    last_scrobbled_track = current_track
+                    last_scrobbled_played_at = track_info['played_at']
         except Exception as e:
             # Log the error
             print(f"Error: {e}", flush=True)
-        time.sleep(30)
+        time.sleep(15)
 
 if __name__ == "__main__":
     main()
