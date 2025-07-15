@@ -182,6 +182,3 @@ cython_debug/
 config_secrets.py
 Koito-Scrobbler.code-workspace
 .env
-
-# Ignore config_secrets.py to prevent sensitive information from being tracked
-.env
