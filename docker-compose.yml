@@ -4,11 +4,12 @@ services:
     container_name: koito-scrobbler
     restart: unless-stopped
     volumes:
-      - ./spotify_cache:/app/.cache
+      - ./.cache:/app/.cache
     env_file:
       - .env
     healthcheck:
-      test: ["CMD", "pgrep", "-f", "koito-scrobbler-service.py"]
+      test: ["CMD", "/usr/local/bin/healthcheck.sh"]
       interval: 30s
       timeout: 10s
-      retries: 3
+      start_period: 60s
+      retries: 5
