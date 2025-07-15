@@ -184,6 +184,4 @@ Koito-Scrobbler.code-workspace
 .env
 
 # Ignore config_secrets.py to prevent sensitive information from being tracked
-config_secrets.py
-spotify_cache
 .env
