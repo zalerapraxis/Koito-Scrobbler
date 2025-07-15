@@ -5,24 +5,13 @@ import spotipy
 import datetime
 from spotipy.oauth2 import SpotifyOAuth
 
-# Try to import config_secrets, handle if it doesn't exist
-try:
-    import config_secrets
-except ImportError:
-    config_secrets = None
+from dotenv import load_dotenv, find_dotenv
+dotenv_path = find_dotenv()
+load_dotenv(dotenv_path, override=True)
 
 def get_config_value(key, default=None):
-    # Check environment variables first
-    value = os.getenv(key)
-    if value is not None:
-        return value
-    
-    # Check config_secrets if available
-    if config_secrets and hasattr(config_secrets, key):
-        return getattr(config_secrets, key)
-    
-    # Return default if not found
-    return default
+    """Get configuration value from environment or default."""
+    return os.getenv(key, default)
 
 # Load configuration
 config = {

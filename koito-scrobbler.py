@@ -1,11 +1,19 @@
 import datetime
 import os
+from dotenv import load_dotenv
+load_dotenv()
+
 from dateutil import parser
 import requests
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 
-from config_secrets import SPOTIPY_CLIENT_ID, SPOTIPY_CLIENT_SECRET, SPOTIPY_REDIRECT_URI, KOITO_API_KEY, KOITO_ADDRESS
+# Load environment variables
+SPOTIPY_CLIENT_ID = os.getenv("SPOTIPY_CLIENT_ID")
+SPOTIPY_CLIENT_SECRET = os.getenv("SPOTIPY_CLIENT_SECRET")
+SPOTIPY_REDIRECT_URI = os.getenv("SPOTIPY_REDIRECT_URI")
+KOITO_API_KEY = os.getenv("KOITO_API_KEY")
+KOITO_ADDRESS = os.getenv("KOITO_ADDRESS")
 
 # Spotify authentication
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=SPOTIPY_CLIENT_ID,
